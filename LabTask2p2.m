@@ -1,6 +1,8 @@
+clear; close all; clc;
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Goal: 
 %    - Check an actual state and control vector
+%    - plot aircraft sim
 % Comments: 
 %   - not a trim state
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

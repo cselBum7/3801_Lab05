@@ -1,3 +1,4 @@
+clear; close all; clc;
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Goal: 
 %    - Function check to see if EOM works 
