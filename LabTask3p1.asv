@@ -1,0 +1,32 @@
+function xdot = AircraftEOMDoublet(time, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters)
+
+%LABTASK3P1 This function simulates the fixed wing aircraft equations of
+%motion, including a negative pulse to the elevator, simulating a doublet
+%mode. The function then outputs the derivative of the state vector, to be
+%integrated using ode45.
+
+
+% set up piecewise function to calc del_e
+del_e = aircraft_surfaces(4);
+
+
+if (0 < time) && (time <= doublet_time)
+    del_e = del_e + doublet_size;
+
+elseif (doublet_time < time) && (time <= (2 * doublet_time))
+    del_e = del_e - double_size;
+
+elseif (t > (2 * doublet_time))
+    del_e = del_e;
+
+else
+    disp('Error')
+
+end
+
+aircraft_surfaces(4)
+
+
+
+
+end
