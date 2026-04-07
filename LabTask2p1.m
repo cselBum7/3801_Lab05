@@ -19,4 +19,30 @@ u0 = [0,0,0,0];
 
 % call to EOM function 
 
+% figure numbers 
+figNums = 1:6; 
+
+
 % call to plot aircraftsim
+PlotAircraftSim()
+
+% saving figures 
+save = 0; 
+
+if save
+    folder = sprintf('LabTask2p1'); % change the name of the folder per task. The i, is if there are multiple cases
+    if ~exist(folder, 'dir')
+        mkdir(folder);
+    end
+
+       % will put call to plot aircraft sim in here after it works 
+
+        % Save each figure
+    for k = 1:length(figNums)
+        f = figure(current_figs(k));   % grab figure handle
+
+        filename = sprintf('%s/Fig_%d.png', folder, k);
+        exportgraphics(f, filename, 'Resolution', 300);
+    end
+
+end
