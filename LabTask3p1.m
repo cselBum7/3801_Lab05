@@ -19,7 +19,7 @@ x0 = [0,0,-1800,0,.02780,0,20.99,0,.5837,0,0,0]'; % NOTE: .02780 is in radians a
 u0 = [.1079,0,0,.3182]'; % radians
 
 % doublet duration
-doublet_time = .25; % secons
+doublet_time = 0.25; % seconds
 
 % call to EOM function 
 

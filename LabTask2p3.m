@@ -8,10 +8,10 @@ clear; close all; clc;
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 % initial state vector 
-x0 = [0,0,-1800,15,-12,270,19,3,-2,.08,-.2,0]'; % NOTE: units are [m],[rad],[m\s],[deg/s]
+x0 = [0,0,-1800,15,-12,270,19,3,-2,deg2rad(0.08),deg2rad(-0.2),deg2rad(0)]'; % NOTE: units are [m],[rad],[m\s],[deg/s]
 
 % initial control vector
-u0 = [5,2,-13,.3]'; % degrees
+u0 = [deg2rad(5),deg2rad(2),deg2rad(-13),0.3]'; % convert deg to rad
 
 % call to EOM function 
 
