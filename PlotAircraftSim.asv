@@ -73,18 +73,16 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
 
     % convert to degrees
     deg_control_input_array(1,:) = rad2deg(control_input_array(1,:));
-    deg_control_input_array(2,:) = rad2deg(control_input_array(2,:));
-    deg_control_input_array(3,:) = rad2deg(control_input_array(3,:));
-
+    deg_control_input_array(1,:) = rad2deg(control_input_array(1,:));
 
 
     % Control Input Variables
     figure(fig(5));
     hold on;
-    subplot(411); plot(time, deg_control_input_array(1,:), col); hold on; ylabel('\delta_e (Deg)');
-    subplot(412); plot(time, deg_control_input_array(2,:), col); hold on; ylabel('\delta_a (Deg)');
-    subplot(413); plot(time, deg_control_input_array(3,:), col); hold on; ylabel('\delta_r (Deg)');
-    subplot(414); plot(time, control_input_array(4,:), col); hold on; ylabel('\delta_t (Fractional)');
+    subplot(411); plot(time, deg_control_input_array(1,:), col); hold on; ylabel('Z_c [N]');
+    subplot(412); plot(time, deg_control_input_array(2,:), col); hold on; ylabel('L_c [Nm]');
+    subplot(413); plot(time, deg_control_input_array(3,:), col); hold on; ylabel('M_c [Nm]');
+    subplot(414); plot(time, deg_control_input_array(4,:), col); hold on; ylabel('N_c [Nm]');
     xlabel('Time [s]');
     sgtitle('Control Input vs Time'); 
 
