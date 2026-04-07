@@ -1,3 +1,4 @@
+clear; close all; clc;
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Goal: 
 %    - Use ode45 to simulate aircraft EOM 
