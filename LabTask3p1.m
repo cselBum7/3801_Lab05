@@ -34,7 +34,7 @@ PlotAircraftSim()
 save = 0; 
 
 if save
-    folder = sprintf('LabTask2p1'); % change the name of the folder per task. The i, is if there are multiple cases
+    folder = sprintf('LabTask3p1'); % change the name of the folder per task. The i, is if there are multiple cases
     if ~exist(folder, 'dir')
         mkdir(folder);
     end
