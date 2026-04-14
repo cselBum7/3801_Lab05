@@ -45,7 +45,7 @@ L8 = Ix/Lam;
 
 A5 = [L1*p*q-L2*q*r, L5*p*r-L6*(p^2-r^2), L7*p*q-L1*q*r]';
 
-rho = stdatmo(z_E);
+rho = stdatmo(abs(z_E));
 [aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, aircraft_surfaces, wind_inertial, rho, aircraft_parameters);
 
 X = aero_forces(1);
