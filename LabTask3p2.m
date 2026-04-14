@@ -14,23 +14,64 @@ clear; close all; clc;
 %   response of the a/c. 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
+aircraft_parameters = ttwistor;
+
 % initial state vector 
-x0 = [0,0,-1800,0,.02780,0,20.99,0,.5837,0,0,0]'; % NOTE: .02780 is in radians and everything else is in degrees and meters
+aircraft_state = [0,0,-1800,0,.02780,0,20.99,0,.5837,0,0,0]'; % NOTE: .02780 is in radians and everything else is in degrees and meters
 
 % initial control vector
-u0 = [.1079,0,0,.3182]'; % radians
+aircraft_surfaces = [.1079,0,0,.3182]'; % radians
 
 % doublet duration
-doublet_time = .25; % secons
+doublet_time = 0.25; % seconds
+
+doublet_size = deg2rad(15); % in rad
+
+% set wind inertial
+wind_inertial = [0;0;0];
+
 
 % call to EOM function 
+t_span = linspace(0,100);
+
+[t, var] = ode45(@(t, aircraft_state) AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters), t_span, aircraft_state);
+
+
+del_e = repmat(aircraft_surfaces(1), 1, length(t));
+
+% output control surface
+for i = 1:length(t)
+if (t(i) >= 0) && (t(i) <= doublet_time)
+    del_e(i) = del_e(i) + doublet_size;
+
+elseif (t(i) > doublet_time) && (t(i) <= 2*doublet_time)
+    del_e(i) = del_e(i) - doublet_size; 
+
+elseif t(i) > 2*doublet_time
+    del_e(i) = 0.1079; % set to trim if elevator isnt deflected
+else
+    disp('Error')
+    
+end
+
+end
+
+control_input_array = repmat(aircraft_surfaces, 1, length(t));
+
+control_input_array(1, :) = del_e;
+
 
 % figure numbers 
 figNums = 1:6; 
 
+col = '-b';
+
 
 % call to plot aircraftsim
-PlotAircraftSim()
+PlotAircraftSim(t, var', control_input_array, figNums, col, "3-2")
+
 
 % saving figures 
 save = 0; 

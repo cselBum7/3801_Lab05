@@ -31,9 +31,9 @@ wind_inertial = [0;0;0];
 
 
 % call to EOM function 
-t_span = linspace(0,3);
+t_span = [0,3];
 
-[t, var, control_input_array] = ode45(@(t, aircraft_state) AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters), t_span, aircraft_state);
+[t, var] = ode45(@(t, aircraft_state) AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters), t_span, aircraft_state);
 
 
 del_e = repmat(aircraft_surfaces(1), 1, length(t));
@@ -67,7 +67,7 @@ col = '-b';
 
 
 % call to plot aircraftsim
-PlotAircraftSim(t, var', control_input_array, figNums, col)
+PlotAircraftSim(t, var', control_input_array, figNums, col, "3-1")
 
 
 
