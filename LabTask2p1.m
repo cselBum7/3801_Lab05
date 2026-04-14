@@ -1,4 +1,3 @@
-clear; close all; clc;
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Goal: 
 %    - Function check to see if EOM works 
@@ -11,39 +10,57 @@ clear; close all; clc;
 %     flight condition. Why should we not expect this to be a trim
 %     condition?
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+clear;
+clc;
+close all;
 
+aircraft_parameters = ttwistor;
+wind_inertial = [0;0;0];
+
+% Define what part to run, if you want all then input 0
+part = 2;
+
+if part==1 || part == 0
 % initial state vector 
-x0 = [0,0,-1609.34,21,0,0,0,0,0,0,0,0]';
+x0 = [0,0,-1609.34,0,0,0,21,0,0,0,0,0]';
 
 % initial control vector
 u0 = [0,0,0,0]';
 
 % call to EOM function 
-
-% figure numbers 
-figNums = 1:6; 
-
+[t1,var1] = ode45(@(t1,var1) AircraftEOM(t1, var1, u0, wind_inertial, aircraft_parameters), [0,200], x0);
+control = repmat(u0, 1 ,length(t1));
 
 % call to plot aircraftsim
-PlotAircraftSim()
+PlotAircraftSim(t1, var1', control , [1;2;3;4;5;6], 'b',"2-1")
+%}
+end
 
-% saving figures 
-save = 0; 
+if part == 2 || part == 0
+% initial state vector 
+x0 = [0,0,-1800,0,.02780,0,20.99,0,.5837,0,0,0]'; % NOTE: .02780 is in radians and everything else is in degrees and meters
 
-if save
-    folder = sprintf('LabTask2p1'); % change the name of the folder per task. The i, is if there are multiple cases
-    if ~exist(folder, 'dir')
-        mkdir(folder);
-    end
+% initial control vector
+u0 = [.1079,0,0,.3182]'; % radians
 
-       % will put call to plot aircraft sim in here after it works 
+% call to EOM function 
+[t2,var2] = ode45(@(t2,var2) AircraftEOM(t2, var2, u0, wind_inertial, aircraft_parameters), [0,200], x0);
+control = repmat(u0, 1 ,length(t2));
 
-        % Save each figure
-    for k = 1:length(figNums)
-        f = figure(current_figs(k));   % grab figure handle
+% call to plot aircraftsim
+PlotAircraftSim(t2, var2', control , [1;2;3;4;5;6], 'b',"2-2")
 
-        filename = sprintf('%s/Fig_%d.png', folder, k);
-        exportgraphics(f, filename, 'Resolution', 300);
-    end
+end
+if part == 3 || part == 0 
+x0 = [0,0,-1800,deg2rad(15),deg2rad(-12),deg2rad(270),19,3,-2,deg2rad(0.08),deg2rad(-0.2),deg2rad(0)]'; % NOTE: units are [m],[rad],[m\s],[deg/s]
 
+% initial control vector
+u0 = [deg2rad(5),deg2rad(2),deg2rad(-13),0.3]'; % convert deg to rad
+
+% call to EOM function 
+[t3,var3] = ode45(@(t3,var3) AircraftEOM(t3, var3, u0, wind_inertial, aircraft_parameters), [0,200], x0);
+control = repmat(u0, 1 ,length(t3));
+
+% call to plot aircraftsim
+PlotAircraftSim(t3, var3', control , [1;2;3;4;5;6], 'b',"2-3")
 end
