@@ -1,4 +1,4 @@
-function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, col)
+function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, col, part)
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % GOAL: 
 %   - Function should plot results of a full simulation once it is
@@ -37,9 +37,10 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
     hold on;
     subplot(311); plot(time, aircraft_state_array(1,:), col); hold on; ylabel('x_E [m]');
     subplot(312); plot(time, aircraft_state_array(2,:), col); hold on; ylabel('y_E [m]');
-    subplot(313); plot(time, aircraft_state_array(3,:), col); hold on; ylabel('z_E [m]');
+    subplot(313); plot(time, aircraft_state_array(3,:), col); hold on; ylabel('z_E [m]');set(gca, 'YDir', 'reverse');
     xlabel('Time [s]');
     sgtitle('Inertial Position vs Time'); 
+    print(fullfile("Part 2 Figures/",[part + '-Figure-' + num2str(fig(1)) + '.png']),'-r300','-dpng')
 
     % Euler Angles
     figure(fig(2));
@@ -48,7 +49,8 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
     subplot(312); plot(time, aircraft_state_array(5,:), col); hold on; ylabel('\theta [rad]');
     subplot(313); plot(time, aircraft_state_array(6,:), col); hold on; ylabel('\psi [rad]');
     xlabel('Time [s]');
-    sgtitle('Euler Angles vs Time'); 
+    sgtitle('Euler Angles vs Time');
+    print(fullfile("Part 2 Figures/",[part + '-Figure-' + num2str(fig(2)) + '.png']),'-r300','-dpng')
 
     % Inertial Velocity in Body Frame
     figure(fig(3));
@@ -57,7 +59,8 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
     subplot(312); plot(time, aircraft_state_array(8,:), col); hold on; ylabel('v [m/s]');
     subplot(313); plot(time, aircraft_state_array(9,:), col); hold on; ylabel('w [m/s]');
     xlabel('Time [s]');
-    sgtitle('Inertial Velocity vs Time'); 
+    sgtitle('Inertial Velocity vs Time');
+    print(fullfile("Part 2 Figures/",[part + '-Figure-' + num2str(fig(3)) + '.png']),'-r300','-dpng')
 
     % Angular Velocity
     figure(fig(4));
@@ -66,7 +69,8 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
     subplot(312); plot(time, aircraft_state_array(11,:), col); hold on; ylabel('q [rad/s]');
     subplot(313); plot(time, aircraft_state_array(12,:), col); hold on; ylabel('r [rad/s]');
     xlabel('Time [s]');
-    sgtitle('Angular Velocity vs Time'); 
+    sgtitle('Angular Velocity vs Time');
+    print(fullfile("Part 2 Figures/",[part + '-Figure-' + num2str(fig(4)) + '.png']),'-r300','-dpng')
 
     %% Figure 5
 
@@ -86,7 +90,8 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
     subplot(413); plot(time, deg_control_input_array(3,:), col); hold on; ylabel('\delta_r (Deg)');
     subplot(414); plot(time, control_input_array(4,:), col); hold on; ylabel('\delta_t (Fractional)');
     xlabel('Time [s]');
-    sgtitle('Control Input vs Time'); 
+    sgtitle('Control Input vs Time');
+    print(fullfile("Part 2 Figures/",[part + '-Figure-' + num2str(fig(5)) + '.png']),'-r300','-dpng')
 
     %% Figure 6 
 
@@ -102,5 +107,6 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
     grid on; axis equal;
     xlabel('X_E Position [m]'); ylabel('Y_E Position [m]'); zlabel('Height [m]');
     title('3D Aircraft Path');
+    print(fullfile("Part 2 Figures/",[part + '-Figure-' + num2str(fig(6)) + '.png']),'-r300','-dpng')
 end
 
