@@ -1,32 +1,77 @@
-function xdot = AircraftEOMDoublet(time, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters)
+clear; close all; clc;
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% Goal: 
+%    - Use ode45 to simulate aircraft EOM for 3 seconds
+%    - Plot the results from .5 sec to 1.5 sec i.e (short period mode)
+%    - Estimeate the natural frequency and damping ratio of the short
+%    period mode of the aircraft
+% Comments: 
+%   - The initial state and control inputs are the trim values from problem
+%   2.2
+%   - Apply a doublet of size 15 degrees and duration doublet_time = .25
+%   sec
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-%LABTASK3P1 This function simulates the fixed wing aircraft equations of
-%motion, including a negative pulse to the elevator, simulating a doublet
-%mode. The function then outputs the derivative of the state vector, to be
-%integrated using ode45.
+
+aircraft_parameters = ttwistor;
+
+% initial state vector 
+aircraft_state = [0,0,-1800,0,.02780,0,20.99,0,.5837,0,0,0]'; % NOTE: .02780 is in radians and everything else is in degrees and meters
+
+% initial control vector
+aircraft_surfaces = [.1079,0,0,.3182]'; % radians
+
+% doublet duration
+doublet_time = 0.25; % seconds
+
+doublet_size = deg2rad(15); % in rad
+
+% set wind inertial
+wind_inertial = [0;0;0];
 
 
-% set up piecewise function to calc del_e
-del_e = aircraft_surfaces(4);
+% call to EOM function 
+time = linspace(0,3, 1000);
+
+[t, var] = ode45(@(t, aircraft_state) AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters), time, aircraft_state);
 
 
-if (0 < time) && (time <= doublet_time)
-    del_e = del_e + doublet_size;
+control_input_array = zeros()
+for i = 1:length(t)
 
-elseif (doublet_time < time) && (time <= (2 * doublet_time))
-    del_e = del_e - double_size;
-
-elseif (t > (2 * doublet_time))
-    del_e = del_e;
-
-else
-    disp('Error')
-
+    [~, aircraft_surfaces] = AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters)
+    
+    control_input_array(i) = aircraft_surfaces;
 end
 
-aircraft_surfaces(4)
+
+% figure numbers 
+figNums = 1:6; 
+
+col = '-b';
+
+% call to plot aircraftsim
+PlotAircraftSim(t, var, control_input_array, figNums, col)
 
 
 
+% saving figures 
+save = 0; 
+
+if save
+    folder = sprintf('LabTask3p1'); % change the name of the folder per task. The i, is if there are multiple cases
+    if ~exist(folder, 'dir')
+        mkdir(folder);
+    end
+
+       % will put call to plot aircraft sim in here after it works 
+
+        % Save each figure
+    for k = 1:length(figNums)
+        f = figure(current_figs(k));   % grab figure handle
+
+        filename = sprintf('%s/Fig_%d.png', folder, k);
+        exportgraphics(f, filename, 'Resolution', 300);
+    end
 
 end
