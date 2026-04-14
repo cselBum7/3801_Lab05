@@ -31,18 +31,33 @@ wind_inertial = [0;0;0];
 
 
 % call to EOM function 
-time = linspace(0,3, 1000);
+t_span = linspace(0,3);
 
-[t, var] = ode45(@(t, aircraft_state) AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters), time, aircraft_state);
+[t, var, control_input_array] = ode45(@(t, aircraft_state) AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters), t_span, aircraft_state);
 
 
-control_input_array = zeros()
+del_e = zeros(length(t));
+
+% output control surface
 for i = 1:length(t)
+if (t(i) >= 0) && (t(i) <= doublet_time)
+    del_e(i) = del_e(i) + doublet_size;
 
-    [~, aircraft_surfaces] = AircraftEOMDoublet(t, aircraft_state, aircraft_surfaces, doublet_size, doublet_time, wind_inertial, aircraft_parameters)
+elseif (t(i) > doublet_time) && (t(i) <= 2*doublet_time)
+    del_e(i) = del_e(i) - doublet_size; 
+
+elseif t > 2*doublet_time
+    del_e(i) = 0.1079; % set to trim if elevator isnt deflected
+else
+    disp('Error')
     
-    control_input_array(i) = aircraft_surfaces;
 end
+
+end
+
+control_input_array = repmat(aircraft_surfaces, 1, length(t));
+
+control_input_array(1) = del_e;
 
 
 % figure numbers 
@@ -50,8 +65,10 @@ figNums = 1:6;
 
 col = '-b';
 
+control_input_array = [.1079,0,0,.3182]';
+
 % call to plot aircraftsim
-PlotAircraftSim(t, var, control_input_array, figNums, col)
+PlotAircraftSim(t, var', control_input_array, figNums, col)
 
 
 
